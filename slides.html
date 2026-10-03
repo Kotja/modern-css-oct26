@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Modern CSS: Animations and Layouts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Reveal.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/dracula.min.css">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/monokai.min.css">
+
+    <style>
+        .playground-container {
+            display: flex;
+            gap: 20px;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .scroll-frame {
+            width: 50%;
+            height: 300px;
+            border: 2px solid #bd93f9;
+            border-radius: 8px;
+            background: #282a36;
+        }
+
+        .code-col { width: 50%; }
+
+        .meme-text {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffb86c;
+            margin-bottom: 30px;
+        }
+
+        .reveal .playground-container pre {
+            width: 100%;
+            margin: 0;
+            font-size: 0.42em;
+            box-shadow: none;
+        }
+
+        .live-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .live-link img {
+            width: 92px;
+            height: 92px;
+            margin: 0;
+            background: #fff;
+            padding: 6px;
+            border-radius: 8px;
+        }
+
+        .live-link p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section>
+                <h2>Modern CSS</h2>
+                <h3>Animations, Logic and Layouts</h3>
+                <p>Melbourne CSS Meetup</p>
+            </section>
+
+            <!-- Slide 2: The Meme -->
+            <section>
+                <div class="meme-text">
+                    <p>Tired: Using 500 lines of JavaScript to track scroll position.</p>
+                    <p>Wired: Three lines of CSS.</p>
+                </div>
+            </section>
+
+            <!-- Slide 3: The Hook (Interactive Demo) -->
+            <section>
+                <h3>Try it Live</h3>
+                <div class="live-link">
+                    <img src="qr.svg" alt="QR code for kotja.github.io/MelbCSS26talk">
+                    <p>Scan the QR code or go to <a href="https://kotja.github.io/MelbCSS26talk/"><strong>kotja.github.io/MelbCSS26talk</strong></a></p>
+                </div>
+                <div class="playground-container">
+                    <!-- Isolated from Reveal's transformed slides, which disable scroll timelines. -->
+                    <iframe class="scroll-frame" title="Scroll-driven animation demo" src="demos/scroll-timeline.html"></iframe>
+                    <div class="code-col">
+                        <pre><code data-trim data-noescape class="language-css">
+.animated-box {
+  position: sticky;
+  top: 50px;
+  animation: rotateBox linear forwards;
+  /* The Magic Line */
+  animation-timeline: scroll(nearest);
+}
+
+@keyframes rotateBox {
+  to {
+    transform: rotate(360deg) scale(1.5);
+    background: #50fa7b;
+  }
+}
+                        </code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Tree Counting & Color -->
+            <section>
+                <h3>Native Logic Functions</h3>
+                <p>Dynamic calculations previously requiring JavaScript.</p>
+                <pre><code data-trim data-noescape class="language-css">
+/* Stagger animations automatically */
+li {
+  animation-delay: calc(sibling-index() * 0.1s);
+}
+
+/* Ensure accessible text contrast dynamically */
+.card {
+  background: var(--theme-color);
+  color: contrast-color(var(--theme-color));
+}
+                </code></pre>
+            </section>
+
+            <!-- Slide 5: Layout (Subgrid) -->
+            <section>
+                <h3>Modern Layouts: Subgrid</h3>
+                <p>Aligning nested components to parent grids.</p>
+                <pre><code data-trim data-noescape class="language-css">
+.parent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card {
+  /* Spans 3 columns */
+  grid-column: span 3;
+  display: grid;
+  /* Inherits columns from .parent-grid */
+  grid-template-columns: subgrid;
+}
+                </code></pre>
+            </section>
+
+            <!-- Slide 6: Architecture -->
+            <section>
+                <h3>Architecture: Cascade Layers</h3>
+                <p>Control specificity without using !important.</p>
+                <pre><code data-trim data-noescape class="language-css">
+@layer reset, framework, custom;
+
+@layer custom {
+  .btn { background: blue; }
+  /* Wins over framework, even if framework
+     has higher selector specificity */
+}
+
+@layer framework {
+  form .btn.primary { background: red; }
+}
+                </code></pre>
+            </section>
+
+            <!-- Slide 7: Wrap Up -->
+            <section>
+                <h2>Thank You</h2>
+                <p>Code and slides: <a href="https://github.com/Kotja/MelbCSS26talk">github.com/Kotja/MelbCSS26talk</a></p>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Reveal.js Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            plugins: [ RevealHighlight ]
+        });
+    </script>
+</body>
+</html>

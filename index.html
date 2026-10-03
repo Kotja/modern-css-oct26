@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Playground · The New Era of CSS</title>
+    <meta
+      name="description"
+      content="Edit the CSS from the Melbourne CSS Meetup 2026 talk and watch scroll timelines, sibling-index(), contrast-color(), subgrid, and cascade layers respond."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Outfit:wght@420;560;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <div>
+          <p class="eyebrow">Melbourne CSS Meetup 2026</p>
+          <p class="brand-name">The New Era of CSS</p>
+        </div>
+      </div>
+      <p class="tagline">Edit the CSS. Watch it work, or watch it break.</p>
+    </header>
+
+    <div class="shell">
+      <nav class="labs" aria-label="Labs">
+        <p class="labs-label">Labs</p>
+        <div id="lab-list"></div>
+      </nav>
+
+      <main>
+        <section class="intro">
+          <p class="kicker" id="kicker"></p>
+          <h1 id="title"></h1>
+          <p class="blurb" id="blurb"></p>
+          <p class="support" id="support" hidden></p>
+        </section>
+
+        <section class="preview-panel">
+          <div class="panel-bar">
+            <h2>Preview</h2>
+            <div class="tools" id="tools"></div>
+          </div>
+          <iframe id="stage" title="Live CSS preview"></iframe>
+        </section>
+
+        <section class="editor-panel">
+          <div class="panel-bar">
+            <h2>CSS</h2>
+            <div class="tools">
+              <span class="apply-state" id="apply-state">Live</span>
+              <button type="button" id="reset">Reset</button>
+            </div>
+          </div>
+          <textarea id="css" spellcheck="false" aria-label="CSS for this lab"></textarea>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
