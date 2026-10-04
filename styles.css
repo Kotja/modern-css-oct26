@@ -100,6 +100,7 @@ textarea {
 .labs {
   padding: 22px 16px;
   border-right: 1px solid var(--line);
+  overflow: auto;
 }
 
 .labs-label {

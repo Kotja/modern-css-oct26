@@ -1,16 +1,186 @@
 const labs = [
   {
-    id: "scroll",
+    id: "reduced",
     index: "01",
-    name: "Scroll timeline",
-    code: "animation-timeline",
-    kicker: "Native logic",
-    title: "Scroll-driven animations",
+    name: "Reduced motion",
+    code: "prefers-reduced-motion",
+    kicker: "Motion accessibility",
+    title: "Keep the meaning, drop the travel",
     blurb:
-      "The bar is tied to the preview’s scroll position. Change the timeline, the origin, or the keyframes and scroll again.",
+      "Large scaling, panning, and parallax are common vestibular triggers. The media query is what you ship. The switch stands in for the operating system, so this room can compare both without changing a laptop setting.",
+    support: () => true,
+    baseCss: `
+      html, body { height: 100%; }
+      body { margin: 0; display: grid; place-items: center; background: #f8fafc; color: #0f172a; font-family: Outfit, sans-serif; }
+      .frame { width: min(520px, calc(100% - 32px)); }
+      .switch { display: flex; align-items: center; gap: 8px; margin: 0 0 18px; font-size: 14px; color: #475569; }
+      .stage { height: 220px; display: grid; place-items: center; border-radius: 28px; background: white; border: 1px solid #e2e8f0; overflow: hidden; }
+      .card { width: 180px; height: 120px; border-radius: 22px; background: #7c3aed; color: white; display: grid; place-items: center; font-weight: 700; }
+    `,
+    css: `.card {
+  animation: sweep 2.8s ease-in-out infinite alternate;
+}
+
+@keyframes sweep {
+  from { transform: translateX(-48px) scale(0.82); }
+  to { transform: translateX(48px) scale(1.18); }
+}
+
+@keyframes fade {
+  from { opacity: 0.45; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: fade 700ms ease-out both;
+    transform: none;
+  }
+}
+
+:root[data-motion="reduce"] .card {
+  animation: fade 700ms ease-out both;
+  transform: none;
+}
+
+:root[data-motion="full"] .card {
+  animation: sweep 2.8s ease-in-out infinite alternate;
+}`,
+    html: () => `
+      <div class="frame">
+        <label class="switch"><input id="reduce" type="checkbox"> Reduced motion</label>
+        <div class="stage"><div class="card">Move</div></div>
+      </div>
+      <script>
+        const box = document.getElementById("reduce");
+        const apply = () => {
+          document.documentElement.dataset.motion = box.checked ? "reduce" : "full";
+        };
+        box.addEventListener("change", apply);
+        apply();
+      </script>
+    `,
+  },
+  {
+    id: "mechanics-wave-4",
+    index: "02",
+    name: "Transitions",
+    code: "transition / @keyframes",
+    kicker: "Core mechanics",
+    title: "A transition waits. A keyframe runs.",
+    blurb:
+      "Hi waves twice, stops, then waves again. Click it to stop for good. The button does nothing until you hover, then it jumps, grows, and changes colour.",
+    support: () => true,
+    tools: (_lab, api) => [
+      { label: "Restart", onClick: () => api.render() },
+    ],
+    baseCss: `
+      html, body { height: 100%; }
+      body { margin: 0; display: grid; place-items: center; background: #ffffff; color: #0f172a; font-family: Outfit, sans-serif; }
+      .board { width: min(640px, calc(100% - 32px)); display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      .panel { min-height: 300px; border: 1px solid #e2e8f0; border-radius: 24px; display: grid; align-content: center; justify-items: center; gap: 28px; padding: 36px 28px 48px; overflow: hidden; }
+      .label { margin: 0; font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #64748b; }
+      .note { grid-column: 1 / -1; margin: 4px 0 0; text-align: center; color: #64748b; font-size: 14px; line-height: 1.4; }
+      .word { margin: 0; padding: 0; border: 0; background: none; font: inherit; font-size: 64px; font-weight: 700; letter-spacing: -0.04em; color: #7c3aed; cursor: pointer; }
+      .chip { border: 0; background: #0f172a; color: white; font: inherit; font-weight: 700; font-size: 22px; padding: 18px 28px; border-radius: 999px; cursor: pointer; }
+    `,
+    css: `/* Keyframes keep running. Nobody has to hover. */
+.word {
+  transform-origin: bottom center;
+  animation: wave 1.6s linear infinite;
+}
+
+.word.paused {
+  animation-play-state: paused;
+}
+
+@keyframes wave {
+  0% { transform: rotate(0deg); animation-timing-function: ease-out; }
+  8% { transform: rotate(-24deg); animation-timing-function: ease-in-out; }
+  16% { transform: rotate(24deg); animation-timing-function: ease-out; }
+  24% { transform: rotate(-24deg); animation-timing-function: ease-in-out; }
+  32% { transform: rotate(24deg); animation-timing-function: ease-out; }
+  44% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* A transition waits for a second state. Hover is that state. */
+.chip {
+  transition: transform 500ms ease-out, background-color 500ms ease-out;
+}
+
+.chip:hover,
+.chip:focus-visible {
+  transform: translateY(-48px) scale(1.55) rotate(-8deg);
+  background: #7c3aed;
+}`,
+    html: () => `
+      <div class="board">
+        <div class="panel">
+          <p class="label">Keyframes</p>
+          <button class="word" type="button">Hi</button>
+        </div>
+        <div class="panel">
+          <p class="label">Transition</p>
+          <button class="chip" type="button">Hover</button>
+        </div>
+        <p class="note">Click Hi to stop the animation. Click Restart to play it again.</p>
+      </div>
+      <script>
+        document.querySelector(".word").addEventListener("click", (event) => {
+          event.currentTarget.classList.add("paused");
+        });
+      </script>
+    `,
+  },
+  {
+    id: "view",
+    index: "03",
+    name: "View timeline",
+    code: "view()",
+    kicker: "Latest animation",
+    title: "The card is the timeline",
+    blurb:
+      "Each card fades and rises as it enters the scroller. view() uses the element’s own visibility, not a clock and not a scroll listener.",
+    support: () => CSS.supports("animation-timeline", "view()"),
+    unsupported: "This browser does not support view() yet, so the cards will sit still.",
+    baseCss: `
+      html, body { margin: 0; background: #f8fafc; color: #0f172a; font-family: Outfit, sans-serif; }
+      .hint { position: sticky; top: 0; margin: 0; padding: 14px 20px; background: #f8fafc; color: #64748b; font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+      .card { width: min(440px, calc(100% - 48px)); margin: 70vh auto; padding: 32px; border-radius: 28px; background: white; border: 1px solid #e2e8f0; }
+      .card h2 { margin: 0 0 8px; font-size: 32px; }
+      .card p { margin: 0; color: #475569; font-size: 18px; line-height: 1.45; }
+      .end { height: 40vh; }
+    `,
+    css: `.card {
+  animation: reveal auto linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 100%;
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(72px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}`,
+    html: () => `
+      <p class="hint">Scroll</p>
+      <article class="card"><h2>One</h2><p>The timeline starts as this card enters.</p></article>
+      <article class="card"><h2>Two</h2><p>Each card carries its own view timeline.</p></article>
+      <article class="card"><h2>Three</h2><p>Scroll back and the entrance reverses.</p></article>
+      <div class="end"></div>
+    `,
+  },
+  {
+    id: "scroll",
+    index: "04",
+    name: "Scroll timeline",
+    code: "scroll()",
+    kicker: "Latest animation",
+    title: "Progress follows the scrollbar",
+    blurb:
+      "scroll() is the other timeline. The bar is tied to the document scroll, from the top to the bottom. No scroll listener.",
     support: () => CSS.supports("animation-timeline", "scroll(root)"),
-    unsupported:
-      "This browser does not support animation-timeline yet, so the bar will not track the scroll.",
+    unsupported: "This browser does not support animation-timeline yet, so the bar will not track the scroll.",
     baseCss: `
       html, body { margin: 0; background: #f8fafc; color: #0f172a; font-family: Outfit, sans-serif; }
       .track { position: sticky; top: 0; z-index: 2; background: #f8fafc; padding: 10px 0 8px; }
@@ -34,211 +204,150 @@ const labs = [
     html: () => `
       <div class="track"><div class="rail"><div class="bar"></div></div></div>
       <section>
-        <h2>No scroll listener</h2>
-        <p>The fill is an animation. The timeline is the document scroll, so the main thread never has to measure the scrollbar.</p>
+        <h2>The whole scroll</h2>
+        <p>From is the top. To is the bottom. Scroll back up and the bar reverses with you.</p>
       </section>
       <section>
-        <h2>Try breaking it</h2>
-        <p>Swap <code>scroll(root)</code> for <code>auto</code>, or change <code>transform-origin</code> to <code>right center</code>.</p>
+        <h2>Not a clock</h2>
+        <p>Swap <code>scroll(root)</code> for <code>auto</code> and the bar stops tracking position.</p>
       </section>
       <section>
         <h2>Keep going</h2>
-        <p>The range of the timeline is the full scroll distance. From is the top. To is the bottom.</p>
-      </section>
-      <section>
-        <h2>Melbourne CSS</h2>
-        <p>Scroll back up. The bar should reverse with you, because the animation is linked to position, not to time.</p>
+        <p>view() follows an element. scroll() follows the scroller.</p>
       </section>
     `,
   },
   {
-    id: "sibling",
-    index: "02",
-    name: "sibling-index()",
-    code: "sibling-index()",
-    kicker: "Native logic",
-    title: "Dynamic animation staggering",
+    id: "menu",
+    index: "05",
+    name: "Both ways",
+    code: "allow-discrete",
+    kicker: "Latest animation",
+    title: "Fade closed, fade open",
     blurb:
-      "Each card delays itself from its position in the tree. Add a card and the new one picks up the next delay without any JavaScript index.",
-    support: () => CSS.supports("animation-delay", "calc(sibling-index() * 1ms)"),
-    unsupported:
-      "This browser does not support sibling-index() yet, so every card will start together.",
-    state: { count: 4 },
-    tools: (lab, api) => [
-      {
-        label: "Add card",
-        onClick: () => {
-          lab.state.count = Math.min(8, lab.state.count + 1);
-          api.render();
-        },
-      },
-      {
-        label: "Replay",
-        onClick: () => api.render(),
-      },
-    ],
-    baseCss: `
-      html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #ffffff; font-family: Outfit, sans-serif; }
-      ul { list-style: none; margin: 0; padding: 28px; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; align-items: end; }
-      li { width: 72px; border-radius: 16px; background: #7c3aed; color: white; display: grid; place-items: end center; padding: 10px; font-family: "IBM Plex Mono", monospace; }
-    `,
-    css: `li {
-  height: calc(70px + sibling-index() * 28px);
-  animation: rise 700ms both;
-  animation-delay: calc(sibling-index() * 80ms);
-}
-
-@keyframes rise {
-  from { opacity: 0; translate: 0 18px; }
-  to { opacity: 1; translate: 0 0; }
-}`,
-    html: (lab) => `
-      <ul>
-        ${Array.from({ length: lab.state.count }, (_, i) => `<li>${i + 1}</li>`).join("")}
-      </ul>
-    `,
-  },
-  {
-    id: "contrast",
-    index: "03",
-    name: "contrast-color()",
-    code: "contrast-color()",
-    kicker: "Native logic",
-    title: "The contrast-color() function",
-    blurb:
-      "The type colour is chosen by the browser from the background. Pick a new colour, or type one into --bg. The @supports block is the feature. Without contrast-color(), the text stays white.",
-    support: () => CSS.supports("color", "contrast-color(red)"),
-    unsupported:
-      "This browser does not support contrast-color() yet, so the text stays on the fallback colour.",
-    tools: (lab, api) => [
-      {
-        html: `<label>Background <input id="bg-color" type="color" value="#7c3aed" aria-label="Background colour"></label>`,
-        bind: (root) => {
-          const input = root.querySelector("#bg-color");
-          const currentBg = api.getCss().match(/--bg:\s*(#[0-9a-fA-F]{3,8})/);
-          if (currentBg) input.value = currentBg[1];
-          input.addEventListener("input", (event) => {
-            const next = event.target.value;
-            const css = api.getCss().replace(/(--bg:\s*)[^;]+/, `$1${next}`);
-            api.setCss(css);
-          });
-        },
-      },
-    ],
+      "allow-discrete lets the fade finish before display: none. The pill stays where it started. @starting-style gives the opening an opacity to leave from, so the menu fades back in instead of popping.",
+    support: () => CSS.supports("transition-behavior", "allow-discrete"),
+    unsupported: "This browser does not support discrete transitions yet, so the menu will snap.",
     baseCss: `
       html, body { height: 100%; }
       body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; }
-      .card { width: min(460px, calc(100vw - 48px)); min-height: 220px; border-radius: 28px; display: grid; place-items: center; text-align: center; padding: 32px; }
-      h2 { margin: 0 0 8px; font-size: 40px; letter-spacing: -0.04em; }
-      p { margin: 0; font-size: 16px; }
+      .wrap { position: relative; width: min(280px, calc(100% - 32px)); height: 248px; }
+      button { position: absolute; top: 0; left: 0; right: 0; border: 0; background: #0f172a; color: white; font: inherit; font-weight: 700; padding: 12px 16px; border-radius: 999px; cursor: pointer; }
+      .menu { position: absolute; top: 56px; left: 0; right: 0; margin: 0; padding: 8px; list-style: none; background: white; border-radius: 16px; border: 1px solid #e2e8f0; }
+      li { padding: 10px 12px; border-radius: 10px; }
     `,
-    css: `:root {
-  --bg: #7c3aed;
+    css: `.menu {
+  opacity: 1;
+  transition-property: opacity, display;
+  transition-duration: 400ms;
+  transition-timing-function: ease-out;
+  transition-behavior: allow-discrete;
 }
 
-.card {
-  background: var(--bg);
-  color: #ffffff;
+.menu.closed {
+  opacity: 0;
+  display: none;
 }
 
-@supports (color: contrast-color(red)) {
-  .card {
-    color: contrast-color(var(--bg));
+@starting-style {
+  .menu {
+    opacity: 0;
   }
 }`,
     html: () => `
-      <div class="card">
-        <div>
-          <h2>Aa</h2>
-          <p>Automatic high contrast</p>
-        </div>
+      <div class="wrap">
+        <button type="button">Toggle menu</button>
+        <ul class="menu">
+          <li>Profile</li>
+          <li>Settings</li>
+          <li>Sign out</li>
+        </ul>
       </div>
+      <script>
+        const menu = document.querySelector(".menu");
+        document.querySelector("button").addEventListener("click", () => {
+          menu.classList.toggle("closed");
+        });
+      </script>
     `,
   },
   {
-    id: "subgrid",
-    index: "04",
-    name: "Subgrid",
-    code: "subgrid",
-    kicker: "Modern layouts",
-    title: "Perfect alignment with subgrid",
+    id: "height",
+    index: "06",
+    name: "Height auto",
+    code: "interpolate-size",
+    kicker: "Latest animation",
+    title: "Open to height: auto",
     blurb:
-      "Both cards share the parent’s rows, so the titles, text, and actions line up. Remove grid-row and subgrid from the CSS to let each card size itself.",
-    support: () => CSS.supports("grid-template-rows", "subgrid"),
-    unsupported: "This browser does not support subgrid yet, so the rows will not lock together.",
+      "interpolate-size lets a length transition to auto. The panel can be any number of lines. Demo this one in Chrome. It is not in every browser yet.",
+    support: () => CSS.supports("interpolate-size", "allow-keywords"),
+    unsupported: "This browser cannot transition to height: auto yet, so the panel will snap open.",
     baseCss: `
       html, body { height: 100%; }
       body { margin: 0; display: grid; place-items: center; background: #ffffff; color: #0f172a; font-family: Outfit, sans-serif; }
-      .grid { width: min(680px, calc(100% - 40px)); display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; column-gap: 18px; row-gap: 12px; align-items: start; }
-      article { border: 2px solid #ddd6fe; border-radius: 18px; background: #f8fafc; padding: 16px; }
-      h3 { margin: 0; font-size: 22px; }
-      p { margin: 0; color: #475569; line-height: 1.45; }
-      a { color: #7c3aed; font-weight: 700; text-decoration: none; }
+      .item { width: min(420px, calc(100% - 32px)); border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; }
+      button { width: 100%; text-align: left; border: 0; background: #f8fafc; font: inherit; font-weight: 700; padding: 16px 18px; cursor: pointer; }
+      .panel p { margin: 0; padding: 0 18px 16px; color: #475569; line-height: 1.5; }
     `,
-    css: `article {
-  display: grid;
-  grid-row: span 3;
-  grid-template-rows: subgrid;
+    css: `:root {
+  interpolate-size: allow-keywords;
+}
+
+.panel {
+  height: 0;
+  overflow: clip;
+  transition: height 500ms ease-out;
+}
+
+.item.open .panel {
+  height: auto;
 }`,
     html: () => `
-      <div class="grid">
-        <article>
-          <h3>Short title</h3>
-          <p>One quiet sentence.</p>
-          <a href="#">Read</a>
-        </article>
-        <article>
-          <h3>A title long enough to wrap onto a second line</h3>
-          <p>More copy lives here, so a normal stack would push this action further down the card.</p>
-          <a href="#">Read</a>
-        </article>
+      <div class="item">
+        <button type="button">Notes</button>
+        <div class="panel"><p>The height is auto. This copy can wrap onto as many lines as it needs, and the panel still eases open and closed.</p></div>
       </div>
+      <script>
+        const item = document.querySelector(".item");
+        document.querySelector("button").addEventListener("click", () => {
+          item.classList.toggle("open");
+        });
+      </script>
     `,
   },
   {
-    id: "layers",
-    index: "05",
-    name: "Cascade layers",
-    code: "@layer",
-    kicker: "Architecture",
-    title: "Organising with cascade layers",
+    id: "bounce",
+    index: "07",
+    name: "Bounce",
+    code: "linear()",
+    kicker: "Latest animation",
+    title: "A curve written as points",
     blurb:
-      "Three rules target the same button. The last name in the @layer list wins, not the last rule in the file. Move reset to the end of that list and the gray square takes over.",
-    support: () => typeof CSSLayerBlockRule === "function",
-    unsupported: "This browser does not support cascade layers.",
+      "linear() is not a straight line. The points overshoot and settle, so the ball bounces without a guessed cubic-bezier().",
+    support: () => CSS.supports("animation-timing-function", "linear(0, 1)"),
+    unsupported: "This browser does not support the linear() easing function.",
+    tools: (_lab, api) => [{ label: "Replay", onClick: () => api.render() }],
     baseCss: `
       html, body { height: 100%; }
       body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; }
-      .btn { border: 0; font: inherit; font-weight: 700; font-size: 18px; padding: 16px 22px; cursor: pointer; }
+      .stage { height: 280px; display: grid; align-items: end; justify-items: center; }
+      .ball { width: 84px; height: 84px; border-radius: 50%; background: #7c3aed; }
+      .floor { width: 180px; height: 4px; border-radius: 999px; background: #e2e8f0; margin-top: 8px; }
     `,
-    css: `/* The last name in this list wins. */
-@layer reset, components, utilities;
-
-@layer reset {
-  .btn {
-    background: #e2e8f0;
-    color: #0f172a;
-    border-radius: 0;
-  }
+    css: `.ball {
+  animation: drop 1.1s linear(0, 0.05 8%, 1.28 42%, 0.82 62%, 1.08 80%, 1) both;
 }
 
-@layer components {
-  .btn {
-    background: #7c3aed;
-    color: white;
-    border-radius: 999px;
-  }
-}
-
-@layer utilities {
-  .btn {
-    background: #0f172a;
-    color: #c4b5fd;
-    border-radius: 12px;
-  }
+@keyframes drop {
+  from { transform: translateY(-180px) scale(0.85, 1.08); }
+  to { transform: translateY(0) scale(1); }
 }`,
-    html: () => `<button class="btn" type="button">Save changes</button>`,
+    html: () => `
+      <div>
+        <div class="stage"><div class="ball"></div></div>
+        <div class="floor"></div>
+      </div>
+    `,
   },
 ];
 
@@ -302,13 +411,6 @@ function applyCss() {
 function renderTools(lab) {
   tools.replaceChildren();
   (lab.tools ? lab.tools(lab, api) : []).forEach((tool) => {
-    if (tool.html) {
-      const wrap = document.createElement("div");
-      wrap.innerHTML = tool.html;
-      tools.append(wrap);
-      tool.bind(wrap);
-      return;
-    }
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = tool.label;
@@ -348,10 +450,7 @@ labs.forEach((lab) => {
 
 reset.addEventListener("click", () => {
   sessionStorage.removeItem(storageKey(current));
-  if (current.state) current.state.count = 4;
   cssInput.value = current.css;
-  const color = tools.querySelector("#bg-color");
-  if (color) color.value = "#7c3aed";
   applyCss();
 });
 
