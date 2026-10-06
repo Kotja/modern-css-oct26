@@ -97,9 +97,11 @@ const labs = [
     baseCss: `
       html, body { height: 100%; }
       body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; font-size: 40px; }
-      .wrap { position: relative; width: min(520px, calc(100% - 32px)); height: 440px; }
-      button { position: absolute; top: 0; left: 0; right: 0; border: 0; background: #0f172a; color: white; font: inherit; font-weight: 700; padding: 16px 22px; border-radius: 999px; cursor: pointer; }
-      .menu { position: absolute; top: 96px; left: 0; right: 0; margin: 0; padding: 10px; list-style: none; background: white; border-radius: 16px; border: 1px solid #e2e8f0; }
+      .wrap { width: min(520px, calc(100% - 32px)); display: grid; gap: 16px; }
+      button { grid-area: 1 / 1; width: 100%; border: 0; background: #0f172a; color: white; font: inherit; font-weight: 700; padding: 16px 22px; border-radius: 999px; cursor: pointer; }
+      .menu, .slot { grid-area: 2 / 1; margin: 0; padding: 10px; list-style: none; border-radius: 16px; border: 1px solid #e2e8f0; }
+      .menu { background: white; }
+      .slot { visibility: hidden; }
       li { padding: 14px 16px; border-radius: 10px; }
     `,
     css: `.menu {
@@ -124,6 +126,11 @@ const labs = [
       <div class="wrap">
         <button type="button">Toggle menu</button>
         <ul class="menu">
+          <li>Profile</li>
+          <li>Settings</li>
+          <li>Sign out</li>
+        </ul>
+        <ul class="slot" aria-hidden="true">
           <li>Profile</li>
           <li>Settings</li>
           <li>Sign out</li>
