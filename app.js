@@ -1,155 +1,21 @@
 const labs = [
   {
-    id: "reduced",
-    index: "01",
-    name: "Reduced motion",
-    code: "prefers-reduced-motion",
-    kicker: "Motion accessibility",
-    title: "Keep the meaning, drop the travel",
-    blurb:
-      "Large scaling, panning, and parallax are common vestibular triggers. The media query is what you ship. The switch stands in for the operating system, so this room can compare both without changing a laptop setting.",
-    support: () => true,
-    baseCss: `
-      html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #f8fafc; color: #0f172a; font-family: Outfit, sans-serif; }
-      .frame { width: min(520px, calc(100% - 32px)); }
-      .switch { display: flex; align-items: center; gap: 8px; margin: 0 0 18px; font-size: 14px; color: #475569; }
-      .stage { height: 220px; display: grid; place-items: center; border-radius: 28px; background: white; border: 1px solid #e2e8f0; overflow: hidden; }
-      .card { width: 180px; height: 120px; border-radius: 22px; background: #7c3aed; color: white; display: grid; place-items: center; font-weight: 700; }
-    `,
-    css: `.card {
-  animation: sweep 2.8s ease-in-out infinite alternate;
-}
-
-@keyframes sweep {
-  from { transform: translateX(-48px) scale(0.82); }
-  to { transform: translateX(48px) scale(1.18); }
-}
-
-@keyframes fade {
-  from { opacity: 0.45; }
-  to { opacity: 1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card {
-    animation: fade 700ms ease-out both;
-    transform: none;
-  }
-}
-
-:root[data-motion="reduce"] .card {
-  animation: fade 700ms ease-out both;
-  transform: none;
-}
-
-:root[data-motion="full"] .card {
-  animation: sweep 2.8s ease-in-out infinite alternate;
-}`,
-    html: () => `
-      <div class="frame">
-        <label class="switch"><input id="reduce" type="checkbox"> Reduced motion</label>
-        <div class="stage"><div class="card">Move</div></div>
-      </div>
-      <script>
-        const box = document.getElementById("reduce");
-        const apply = () => {
-          document.documentElement.dataset.motion = box.checked ? "reduce" : "full";
-        };
-        box.addEventListener("change", apply);
-        apply();
-      </script>
-    `,
-  },
-  {
-    id: "mechanics-wave-4",
-    index: "02",
-    name: "Transitions",
-    code: "transition / @keyframes",
-    kicker: "Core mechanics",
-    title: "A transition waits. A keyframe runs.",
-    blurb:
-      "Hi waves twice, stops, then waves again. Click it to stop for good. The button does nothing until you hover, then it jumps, grows, and changes colour.",
-    support: () => true,
-    tools: (_lab, api) => [
-      { label: "Restart", onClick: () => api.render() },
-    ],
-    baseCss: `
-      html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #ffffff; color: #0f172a; font-family: Outfit, sans-serif; }
-      .board { width: min(640px, calc(100% - 32px)); display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-      .panel { min-height: 300px; border: 1px solid #e2e8f0; border-radius: 24px; display: grid; align-content: center; justify-items: center; gap: 28px; padding: 36px 28px 48px; overflow: hidden; }
-      .label { margin: 0; font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: #64748b; }
-      .note { grid-column: 1 / -1; margin: 4px 0 0; text-align: center; color: #64748b; font-size: 14px; line-height: 1.4; }
-      .word { margin: 0; padding: 0; border: 0; background: none; font: inherit; font-size: 64px; font-weight: 700; letter-spacing: -0.04em; color: #7c3aed; cursor: pointer; }
-      .chip { border: 0; background: #0f172a; color: white; font: inherit; font-weight: 700; font-size: 22px; padding: 18px 28px; border-radius: 999px; cursor: pointer; }
-    `,
-    css: `/* Keyframes keep running. Nobody has to hover. */
-.word {
-  transform-origin: bottom center;
-  animation: wave 1.6s linear infinite;
-}
-
-.word.paused {
-  animation-play-state: paused;
-}
-
-@keyframes wave {
-  0% { transform: rotate(0deg); animation-timing-function: ease-out; }
-  8% { transform: rotate(-24deg); animation-timing-function: ease-in-out; }
-  16% { transform: rotate(24deg); animation-timing-function: ease-out; }
-  24% { transform: rotate(-24deg); animation-timing-function: ease-in-out; }
-  32% { transform: rotate(24deg); animation-timing-function: ease-out; }
-  44% { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
-}
-
-/* A transition waits for a second state. Hover is that state. */
-.chip {
-  transition: transform 500ms ease-out, background-color 500ms ease-out;
-}
-
-.chip:hover,
-.chip:focus-visible {
-  transform: translateY(-48px) scale(1.55) rotate(-8deg);
-  background: #7c3aed;
-}`,
-    html: () => `
-      <div class="board">
-        <div class="panel">
-          <p class="label">Keyframes</p>
-          <button class="word" type="button">Hi</button>
-        </div>
-        <div class="panel">
-          <p class="label">Transition</p>
-          <button class="chip" type="button">Hover</button>
-        </div>
-        <p class="note">Click Hi to stop the animation. Click Restart to play it again.</p>
-      </div>
-      <script>
-        document.querySelector(".word").addEventListener("click", (event) => {
-          event.currentTarget.classList.add("paused");
-        });
-      </script>
-    `,
-  },
-  {
     id: "view",
-    index: "03",
+    index: "01",
     name: "View timeline",
     code: "view()",
-    kicker: "Latest animation",
-    title: "The card is the timeline",
+    kicker: "Instead of ScrollTrigger",
+    title: "Reveal as it enters",
     blurb:
-      "Each card fades and rises as it enters the scroller. view() uses the element’s own visibility, not a clock and not a scroll listener.",
+      "A motion library would watch the scroll position and toggle a class. view() ties the fade and rise to the moment the card enters the screen.",
     support: () => CSS.supports("animation-timeline", "view()"),
     unsupported: "This browser does not support view() yet, so the cards will sit still.",
     baseCss: `
       html, body { margin: 0; background: #f8fafc; color: #0f172a; font-family: Outfit, sans-serif; }
-      .hint { position: sticky; top: 0; margin: 0; padding: 14px 20px; background: #f8fafc; color: #64748b; font-family: "IBM Plex Mono", monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
-      .card { width: min(440px, calc(100% - 48px)); margin: 70vh auto; padding: 32px; border-radius: 28px; background: white; border: 1px solid #e2e8f0; }
-      .card h2 { margin: 0 0 8px; font-size: 32px; }
-      .card p { margin: 0; color: #475569; font-size: 18px; line-height: 1.45; }
+      .hint { position: sticky; top: 0; margin: 0; padding: 20px 28px; background: #f8fafc; color: #334155; font-family: "IBM Plex Mono", monospace; font-size: 32px; letter-spacing: 0.06em; text-transform: uppercase; }
+      .card { width: min(760px, calc(100% - 48px)); margin: 70vh auto; padding: 48px; border-radius: 28px; background: white; border: 1px solid #e2e8f0; }
+      .card h2 { margin: 0 0 12px; font-size: 72px; }
+      .card p { margin: 0; color: #475569; font-size: 40px; line-height: 1.3; }
       .end { height: 40vh; }
     `,
     css: `.card {
@@ -172,23 +38,23 @@ const labs = [
   },
   {
     id: "scroll",
-    index: "04",
+    index: "02",
     name: "Scroll timeline",
     code: "scroll()",
-    kicker: "Latest animation",
+    kicker: "Instead of a scroll listener",
     title: "Progress follows the scrollbar",
     blurb:
-      "scroll() is the other timeline. The bar is tied to the document scroll, from the top to the bottom. No scroll listener.",
+      "scroll() drives the bar from the top of the page to the bottom. Nothing in JavaScript measures the scrollbar.",
     support: () => CSS.supports("animation-timeline", "scroll(root)"),
     unsupported: "This browser does not support animation-timeline yet, so the bar will not track the scroll.",
     baseCss: `
       html, body { margin: 0; background: #f8fafc; color: #0f172a; font-family: Outfit, sans-serif; }
       .track { position: sticky; top: 0; z-index: 2; background: #f8fafc; padding: 10px 0 8px; }
-      .rail { height: 8px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+      .rail { height: 18px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
       .bar { height: 100%; width: 100%; background: #7c3aed; }
-      section { padding: 72px 40px 120px; max-width: 640px; }
-      h2 { font-size: 32px; margin: 0 0 12px; }
-      p { font-size: 18px; line-height: 1.5; color: #475569; }
+      section { padding: 72px 40px 120px; max-width: 820px; }
+      h2 { font-size: 72px; margin: 0 0 16px; }
+      p { font-size: 40px; line-height: 1.35; color: #475569; }
       code { font-family: "IBM Plex Mono", monospace; font-size: 0.9em; }
     `,
     css: `.bar {
@@ -219,22 +85,22 @@ const labs = [
   },
   {
     id: "menu",
-    index: "05",
-    name: "Both ways",
+    index: "03",
+    name: "Enter and exit",
     code: "allow-discrete",
-    kicker: "Latest animation",
+    kicker: "Instead of mount and unmount",
     title: "Fade closed, fade open",
     blurb:
-      "allow-discrete lets the fade finish before display: none. The pill stays where it started. @starting-style gives the opening an opacity to leave from, so the menu fades back in instead of popping.",
+      "A library animates the menu, then removes it. allow-discrete lets the fade finish before display: none. @starting-style fades it back in. The pill stays put.",
     support: () => CSS.supports("transition-behavior", "allow-discrete"),
     unsupported: "This browser does not support discrete transitions yet, so the menu will snap.",
     baseCss: `
       html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; }
-      .wrap { position: relative; width: min(280px, calc(100% - 32px)); height: 248px; }
-      button { position: absolute; top: 0; left: 0; right: 0; border: 0; background: #0f172a; color: white; font: inherit; font-weight: 700; padding: 12px 16px; border-radius: 999px; cursor: pointer; }
-      .menu { position: absolute; top: 56px; left: 0; right: 0; margin: 0; padding: 8px; list-style: none; background: white; border-radius: 16px; border: 1px solid #e2e8f0; }
-      li { padding: 10px 12px; border-radius: 10px; }
+      body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; font-size: 40px; }
+      .wrap { position: relative; width: min(520px, calc(100% - 32px)); height: 440px; }
+      button { position: absolute; top: 0; left: 0; right: 0; border: 0; background: #0f172a; color: white; font: inherit; font-weight: 700; padding: 16px 22px; border-radius: 999px; cursor: pointer; }
+      .menu { position: absolute; top: 96px; left: 0; right: 0; margin: 0; padding: 10px; list-style: none; background: white; border-radius: 16px; border: 1px solid #e2e8f0; }
+      li { padding: 14px 16px; border-radius: 10px; }
     `,
     css: `.menu {
   opacity: 1;
@@ -273,21 +139,21 @@ const labs = [
   },
   {
     id: "height",
-    index: "06",
+    index: "04",
     name: "Height auto",
     code: "interpolate-size",
-    kicker: "Latest animation",
+    kicker: "Instead of measuring height",
     title: "Open to height: auto",
     blurb:
-      "interpolate-size lets a length transition to auto. The panel can be any number of lines. Demo this one in Chrome. It is not in every browser yet.",
+      "JavaScript reads the content height, then animates to that number. interpolate-size transitions straight to height: auto. Show this one in Chrome.",
     support: () => CSS.supports("interpolate-size", "allow-keywords"),
     unsupported: "This browser cannot transition to height: auto yet, so the panel will snap open.",
     baseCss: `
       html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #ffffff; color: #0f172a; font-family: Outfit, sans-serif; }
-      .item { width: min(420px, calc(100% - 32px)); border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; }
-      button { width: 100%; text-align: left; border: 0; background: #f8fafc; font: inherit; font-weight: 700; padding: 16px 18px; cursor: pointer; }
-      .panel p { margin: 0; padding: 0 18px 16px; color: #475569; line-height: 1.5; }
+      body { margin: 0; display: grid; place-items: center; background: #ffffff; color: #0f172a; font-family: Outfit, sans-serif; font-size: 40px; }
+      .item { width: min(760px, calc(100% - 32px)); border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; }
+      button { width: 100%; text-align: left; border: 0; background: #f8fafc; font: inherit; font-weight: 700; padding: 20px 24px; cursor: pointer; }
+      .panel p { margin: 0; padding: 0 24px 22px; color: #475569; line-height: 1.4; }
     `,
     css: `:root {
   interpolate-size: allow-keywords;
@@ -317,19 +183,19 @@ const labs = [
   },
   {
     id: "bounce",
-    index: "07",
+    index: "05",
     name: "Bounce",
     code: "linear()",
-    kicker: "Latest animation",
+    kicker: "Instead of a spring helper",
     title: "A curve written as points",
     blurb:
-      "linear() is not a straight line. The points overshoot and settle, so the ball bounces without a guessed cubic-bezier().",
+      "linear() writes the overshoot into the easing. A simple bounce does not need a physics function from a library.",
     support: () => CSS.supports("animation-timing-function", "linear(0, 1)"),
     unsupported: "This browser does not support the linear() easing function.",
     tools: (_lab, api) => [{ label: "Replay", onClick: () => api.render() }],
     baseCss: `
       html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; }
+      body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; font-size: 32px; }
       .stage { height: 280px; display: grid; align-items: end; justify-items: center; }
       .ball { width: 84px; height: 84px; border-radius: 50%; background: #7c3aed; }
       .floor { width: 180px; height: 4px; border-radius: 999px; background: #e2e8f0; margin-top: 8px; }

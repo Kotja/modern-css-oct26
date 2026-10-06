@@ -76,24 +76,24 @@ textarea {
 
 .eyebrow {
   color: var(--accent-2);
-  font-size: 12px;
+  font-size: 24px;
 }
 
 .brand-name {
   margin: 2px 0 0;
-  font-size: 18px;
+  font-size: 40px;
   font-weight: 700;
 }
 
 .tagline {
   margin: 0;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 32px;
 }
 
 .shell {
   display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
+  grid-template-columns: 440px minmax(0, 1fr);
   min-height: 0;
 }
 
@@ -103,10 +103,53 @@ textarea {
   overflow: auto;
 }
 
+.deck-link {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  align-items: center;
+  margin: 0 0 18px;
+  padding: 14px 12px;
+  border: 1px solid rgba(196, 181, 253, 0.45);
+  border-radius: 14px;
+  background: rgba(124, 58, 237, 0.16);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.deck-link:hover {
+  background: rgba(124, 58, 237, 0.28);
+}
+
+.deck-link strong {
+  display: block;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.deck-link span span {
+  display: block;
+  margin-top: 4px;
+  color: var(--accent-2);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 24px;
+}
+
+.deck-link .index {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--accent);
+  color: white;
+  font-size: 22px;
+}
+
 .labs-label {
   color: var(--faint);
-  font-size: 11px;
-  padding: 0 10px 12px;
+  font-size: 24px;
+  padding: 0 10px 14px;
 }
 
 .lab-btn {
@@ -126,28 +169,28 @@ textarea {
 
 .lab-btn strong {
   display: block;
-  font-size: 15px;
+  font-size: 30px;
   font-weight: 560;
 }
 
 .lab-btn span {
   display: block;
-  margin-top: 2px;
+  margin-top: 4px;
   color: var(--faint);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 11px;
+  font-size: 24px;
 }
 
 .lab-btn .index {
-  width: 28px;
-  height: 28px;
-  border-radius: 9px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   display: grid;
   place-items: center;
   background: rgba(124, 58, 237, 0.16);
   color: var(--accent-2);
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 12px;
+  font-size: 24px;
 }
 
 .lab-btn[aria-current="true"] {
@@ -169,23 +212,23 @@ main {
 }
 
 .intro h1 {
-  margin: 4px 0 0;
-  font-size: clamp(28px, 3vw, 40px);
+  margin: 6px 0 0;
+  font-size: clamp(56px, 5vw, 80px);
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
 
 .kicker {
   color: var(--accent-2);
-  font-size: 12px;
+  font-size: 28px;
 }
 
 .blurb {
-  margin: 10px 0 0;
-  max-width: 68ch;
+  margin: 12px 0 0;
+  max-width: 42ch;
   color: var(--muted);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 32px;
+  line-height: 1.4;
 }
 
 .support {
@@ -195,8 +238,8 @@ main {
   border-radius: 12px;
   background: rgba(253, 186, 116, 0.12);
   color: var(--warn);
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 28px;
+  line-height: 1.35;
 }
 
 .preview-panel,
@@ -222,7 +265,7 @@ main {
 
 .panel-bar h2 {
   color: var(--faint);
-  font-size: 11px;
+  font-size: 24px;
   font-weight: 600;
 }
 
@@ -238,7 +281,8 @@ main {
   background: #0b1220;
   color: var(--text);
   border-radius: 999px;
-  padding: 7px 12px;
+  padding: 12px 20px;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -252,7 +296,7 @@ main {
   align-items: center;
   gap: 8px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 24px;
 }
 
 .tools input[type="color"] {
@@ -266,7 +310,7 @@ main {
 
 .apply-state {
   color: var(--good);
-  font-size: 11px;
+  font-size: 24px;
 }
 
 #stage {
@@ -286,8 +330,8 @@ main {
   background: #0a1020;
   color: #e2e8f0;
   font-family: "IBM Plex Mono", ui-monospace, monospace;
-  font-size: 13.5px;
-  line-height: 1.55;
+  font-size: 28px;
+  line-height: 1.45;
   tab-size: 2;
 }
 
@@ -327,7 +371,7 @@ main {
   }
 
   .lab-btn {
-    min-width: 210px;
+    min-width: 320px;
   }
 
   .preview-panel {

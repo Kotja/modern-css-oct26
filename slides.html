@@ -2,67 +2,200 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Modern CSS: Animations and Layouts</title>
+    <title>Next-Gen CSS Animations</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Reveal.js CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/dracula.min.css">
-
-    <!-- Code Syntax Highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/black.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
-        .playground-container {
-            display: flex;
-            gap: 20px;
-            text-align: left;
-            margin-top: 20px;
+        :root {
+            --bg: #0b1220;
+            --panel: #111827;
+            --code: #0a1020;
+            --line: rgba(226, 232, 240, 0.12);
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --faint: #64748b;
+            --accent: #7c3aed;
+            --accent-2: #c4b5fd;
+            --warn: #fdba74;
         }
 
-        .scroll-frame {
-            width: 50%;
-            height: 300px;
-            border: 2px solid #bd93f9;
-            border-radius: 8px;
-            background: #282a36;
+        html,
+        body,
+        .reveal,
+        .reveal-viewport,
+        .reveal .backgrounds,
+        .reveal .slide-background {
+            background: var(--bg);
+            background-color: var(--bg);
         }
 
-        .code-col { width: 50%; }
-
-        .meme-text {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #ffb86c;
-            margin-bottom: 30px;
+        .reveal-viewport {
+            background:
+                radial-gradient(900px 420px at 10% -10%, rgba(124, 58, 237, 0.28), transparent 60%),
+                var(--bg);
         }
 
-        .reveal .playground-container pre {
-            width: 100%;
-            margin: 0;
+        .reveal {
+            font-family: Outfit, "Segoe UI", sans-serif;
+            color: var(--text);
+        }
+
+        .reveal .slides section {
+            background: transparent;
+        }
+
+        .reveal h1,
+        .reveal h2,
+        .reveal h3 {
+            font-family: Outfit, "Segoe UI", sans-serif;
+            font-weight: 700;
+            text-transform: none;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            color: var(--text);
+        }
+
+        .reveal h1 { font-size: 1.7em; }
+        .reveal h2 { font-size: 1.35em; }
+
+        .reveal p,
+        .reveal li {
+            font-size: 0.72em;
+            line-height: 1.35;
+            color: var(--muted);
+        }
+
+        .reveal .mark {
+            display: inline-block;
+            width: 14px;
+            height: 48px;
+            margin: 0 0 22px;
+            border-radius: 999px;
+            background: linear-gradient(var(--accent-2), var(--accent));
+        }
+
+        .reveal .eyebrow {
+            margin: 0 0 0.45em;
+            color: var(--accent-2);
+            font-family: "IBM Plex Mono", ui-monospace, monospace;
             font-size: 0.42em;
-            box-shadow: none;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .reveal .subtitle {
+            color: var(--muted);
+            font-size: 0.62em;
+        }
+
+        .reveal ul {
+            display: block;
+            margin-left: 0;
+        }
+
+        .reveal li {
+            margin-bottom: 0.35em;
+        }
+
+        .reveal li::marker {
+            color: var(--accent-2);
+        }
+
+        .reveal strong { color: var(--text); }
+
+        .reveal pre {
+            width: 100%;
+            margin: 0.7em 0 0;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: var(--code);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+            font-size: 0.46em;
+        }
+
+        .reveal pre code {
+            font-family: "IBM Plex Mono", ui-monospace, monospace;
+            line-height: 1.5;
+            max-height: none;
+            padding: 0.9em 1.1em;
+            background: transparent;
+            color: #e2e8f0;
+        }
+
+        .hljs-keyword,
+        .hljs-selector-tag,
+        .hljs-selector-class,
+        .hljs-selector-id,
+        .hljs-attribute,
+        .hljs-built_in {
+            color: var(--accent-2);
+        }
+
+        .hljs-number,
+        .hljs-literal {
+            color: var(--warn);
+        }
+
+        .hljs-string,
+        .hljs-regexp {
+            color: #86efac;
+        }
+
+        .hljs-comment {
+            color: var(--faint);
+        }
+
+        .reveal .note {
+            display: inline-block;
+            margin-top: 0.7em;
+            padding: 0.35em 0.7em;
+            border-radius: 12px;
+            background: rgba(253, 186, 116, 0.12);
+            color: var(--warn);
+            font-size: 0.48em;
         }
 
         .live-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 18px;
+            gap: 28px;
+            margin-top: 0.9em;
+            padding: 22px 28px;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: var(--panel);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
         }
 
         .live-link img {
-            width: 92px;
-            height: 92px;
+            width: 160px;
+            height: 160px;
             margin: 0;
             background: #fff;
-            padding: 6px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 12px;
         }
 
-        .live-link p {
-            margin: 0;
+        .live-link p { margin: 0; text-align: left; }
+
+        .reveal a { color: var(--accent-2); }
+
+        .reveal .progress {
+            height: 6px;
+            color: var(--accent);
+        }
+
+        .reveal .controls {
+            color: var(--accent-2);
         }
     </style>
 </head>
@@ -70,125 +203,152 @@
     <div class="reveal">
         <div class="slides">
 
-            <!-- Slide 1: Title -->
             <section>
-                <h2>Modern CSS</h2>
-                <h3>Animations, Logic and Layouts</h3>
-                <p>Melbourne CSS Meetup</p>
+                <span class="mark" aria-hidden="true"></span>
+                <p class="eyebrow">Melbourne CSS Meetup 2026</p>
+                <h1>Next-Gen CSS Animations</h1>
+                <p class="subtitle">Replacing heavy JavaScript motion libraries with declarative native CSS.</p>
+                <p>The motion lives in CSS. The page does not run a library on every frame.</p>
+                <aside class="notes">
+                    Open on the title. One sentence: these five jobs used to need a motion library, and each one is now a CSS declaration. Then go to the list.
+                </aside>
             </section>
 
-            <!-- Slide 2: The Meme -->
             <section>
-                <div class="meme-text">
-                    <p>Tired: Using 500 lines of JavaScript to track scroll position.</p>
-                    <p>Wired: Three lines of CSS.</p>
-                </div>
+                <p class="eyebrow">Instead of a motion library</p>
+                <h2>Five jobs CSS can own</h2>
+                <ul>
+                    <li><strong>view()</strong> reveals an element as it enters</li>
+                    <li><strong>scroll()</strong> tracks the scrollbar</li>
+                    <li><strong>allow-discrete</strong> fades out, then removes</li>
+                    <li><strong>interpolate-size</strong> opens to height: auto</li>
+                    <li><strong>linear()</strong> writes a bounce as points</li>
+                </ul>
+                <aside class="notes">
+                    About one minute. Name the five replacements, then switch to the playground for each one. Do not teach reduced motion, contrast, or layout here.
+                </aside>
             </section>
 
-            <!-- Slide 3: The Hook (Interactive Demo) -->
             <section>
-                <h3>Try it Live</h3>
+                <p class="eyebrow">01 · Instead of ScrollTrigger</p>
+                <h2>Reveal as it enters</h2>
+                <pre><code data-trim class="language-css">.card {
+  animation: reveal auto linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 100%;
+}
+
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(72px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}</code></pre>
+                <aside class="notes">
+                    About four minutes. Open lab 01 and scroll. animation-duration is auto because the timeline is the scroll, not a clock. Scroll back and the entrance reverses.
+                </aside>
+            </section>
+
+            <section>
+                <p class="eyebrow">02 · Instead of a scroll listener</p>
+                <h2>Progress follows the scrollbar</h2>
+                <pre><code data-trim class="language-css">.bar {
+  transform-origin: left center;
+  animation: grow auto linear both;
+  animation-timeline: scroll(root);
+}
+
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}</code></pre>
+                <p class="note">view() follows an element. scroll() follows the scroller.</p>
+                <aside class="notes">
+                    About two minutes. Open lab 02. Nothing in JavaScript measures the scrollbar.
+                </aside>
+            </section>
+
+            <section>
+                <p class="eyebrow">03 · Instead of mount and unmount</p>
+                <h2>Fade closed, fade open</h2>
+                <pre><code data-trim class="language-css">.menu {
+  opacity: 1;
+  transition-property: opacity, display;
+  transition-duration: 400ms;
+  transition-behavior: allow-discrete;
+}
+.menu.closed { opacity: 0; display: none; }
+@starting-style { .menu { opacity: 0; } }</code></pre>
+                <p class="note">The pill stays put. It is taken out of the flow with position: absolute.</p>
+                <aside class="notes">
+                    About three minutes. Open lab 03 and toggle the menu. The fade finishes before display: none. @starting-style fades it back in. Point at the pill: it does not jump.
+                </aside>
+            </section>
+
+            <section>
+                <p class="eyebrow">04 · Instead of measuring height</p>
+                <h2>Open to height: auto</h2>
+                <pre><code data-trim class="language-css">:root { interpolate-size: allow-keywords; }
+
+.panel {
+  height: 0;
+  overflow: clip;
+  transition: height 500ms ease-out;
+}
+.item.open .panel { height: auto; }</code></pre>
+                <p class="note">Show this one in Chrome. It is not in every browser yet.</p>
+                <aside class="notes">
+                    About three minutes. Open lab 04 and toggle Notes. JavaScript used to read the content height, then animate to that number.
+                </aside>
+            </section>
+
+            <section>
+                <p class="eyebrow">05 · Instead of a spring helper</p>
+                <h2>A curve written as points</h2>
+                <pre><code data-trim class="language-css">.ball {
+  animation: drop 1.1s
+    linear(0, 0.05 8%, 1.28 42%, 0.82 62%, 1.08 80%, 1)
+    both;
+}
+
+@keyframes drop {
+  from { transform: translateY(-180px) scale(0.85, 1.08); }
+  to { transform: translateY(0) scale(1); }
+}</code></pre>
+                <p class="note">This is an easing curve, not a physics engine.</p>
+                <aside class="notes">
+                    About two minutes. Open lab 05 and press Replay. The points overshoot and settle.
+                </aside>
+            </section>
+
+            <section>
+                <p class="eyebrow">The five replacements</p>
+                <h2>Native CSS instead of a library</h2>
+                <ul>
+                    <li>view() for enter</li>
+                    <li>scroll() for a scroll listener</li>
+                    <li>allow-discrete and @starting-style for mount and unmount</li>
+                    <li>interpolate-size for a measured height</li>
+                    <li>linear() for a simple spring</li>
+                </ul>
                 <div class="live-link">
                     <img src="qr.svg" alt="QR code for kotja.github.io/modern-css-oct26">
-                    <p>Scan the QR code or go to <a href="https://kotja.github.io/modern-css-oct26/"><strong>kotja.github.io/modern-css-oct26</strong></a></p>
+                    <p><a href="https://kotja.github.io/modern-css-oct26/?v=4"><strong>kotja.github.io/modern-css-oct26</strong></a></p>
                 </div>
-                <div class="playground-container">
-                    <!-- Isolated from Reveal's transformed slides, which disable scroll timelines. -->
-                    <iframe class="scroll-frame" title="Scroll-driven animation demo" src="demos/scroll-timeline.html"></iframe>
-                    <div class="code-col">
-                        <pre><code data-trim data-noescape class="language-css">
-.animated-box {
-  position: sticky;
-  top: 50px;
-  animation: rotateBox linear forwards;
-  /* The Magic Line */
-  animation-timeline: scroll(nearest);
-}
-
-@keyframes rotateBox {
-  to {
-    transform: rotate(360deg) scale(1.5);
-    background: #50fa7b;
-  }
-}
-                        </code></pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Slide 4: Tree Counting & Color -->
-            <section>
-                <h3>Native Logic Functions</h3>
-                <p>Dynamic calculations previously requiring JavaScript.</p>
-                <pre><code data-trim data-noescape class="language-css">
-/* Stagger animations automatically */
-li {
-  animation-delay: calc(sibling-index() * 0.1s);
-}
-
-/* Ensure accessible text contrast dynamically */
-.card {
-  background: var(--theme-color);
-  color: contrast-color(var(--theme-color));
-}
-                </code></pre>
-            </section>
-
-            <!-- Slide 5: Layout (Subgrid) -->
-            <section>
-                <h3>Modern Layouts: Subgrid</h3>
-                <p>Aligning nested components to parent grids.</p>
-                <pre><code data-trim data-noescape class="language-css">
-.parent-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.card {
-  /* Spans 3 columns */
-  grid-column: span 3;
-  display: grid;
-  /* Inherits columns from .parent-grid */
-  grid-template-columns: subgrid;
-}
-                </code></pre>
-            </section>
-
-            <!-- Slide 6: Architecture -->
-            <section>
-                <h3>Architecture: Cascade Layers</h3>
-                <p>Control specificity without using !important.</p>
-                <pre><code data-trim data-noescape class="language-css">
-@layer reset, framework, custom;
-
-@layer custom {
-  .btn { background: blue; }
-  /* Wins over framework, even if framework
-     has higher selector specificity */
-}
-
-@layer framework {
-  form .btn.primary { background: red; }
-}
-                </code></pre>
-            </section>
-
-            <!-- Slide 7: Wrap Up -->
-            <section>
-                <h2>Thank You</h2>
-                <p>Code and slides: <a href="https://github.com/Kotja/modern-css-oct26">github.com/Kotja/modern-css-oct26</a></p>
+                <aside class="notes">
+                    About one minute. Read the five lines, show the URL, thank the room.
+                </aside>
             </section>
 
         </div>
     </div>
 
-    <!-- Reveal.js Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/highlight/highlight.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/plugin/notes/notes.js"></script>
     <script>
         Reveal.initialize({
             hash: true,
-            plugins: [ RevealHighlight ]
+            transition: "none",
+            plugins: [ RevealHighlight, RevealNotes ]
         });
     </script>
 </body>
