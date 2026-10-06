@@ -12,10 +12,10 @@ const labs = [
     unsupported: "This browser does not support view() yet, so the cards will sit still.",
     baseCss: `
       html, body { margin: 0; background: #f8fafc; color: #0f172a; font-family: Outfit, sans-serif; }
-      .hint { position: sticky; top: 0; margin: 0; padding: 20px 28px; background: #f8fafc; color: #334155; font-family: "IBM Plex Mono", monospace; font-size: 32px; letter-spacing: 0.06em; text-transform: uppercase; }
+      .hint { position: sticky; top: 0; margin: 0; padding: 20px 28px; background: #f8fafc; color: #334155; font-family: "IBM Plex Mono", monospace; font-size: 14.22px; letter-spacing: 0.06em; text-transform: uppercase; }
       .card { width: min(760px, calc(100% - 48px)); margin: 70vh auto; padding: 48px; border-radius: 28px; background: white; border: 1px solid #e2e8f0; }
-      .card h2 { margin: 0 0 12px; font-size: 72px; }
-      .card p { margin: 0; color: #475569; font-size: 40px; line-height: 1.3; }
+      .card h2 { margin: 0 0 12px; font-size: 32px; }
+      .card p { margin: 0; color: #475569; font-size: 17.78px; line-height: 1.3; }
       .end { height: 40vh; }
     `,
     css: `.card {
@@ -53,8 +53,8 @@ const labs = [
       .rail { height: 18px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
       .bar { height: 100%; width: 100%; background: #7c3aed; }
       section { padding: 72px 40px 120px; max-width: 820px; }
-      h2 { font-size: 72px; margin: 0 0 16px; }
-      p { font-size: 40px; line-height: 1.35; color: #475569; }
+      h2 { font-size: 32px; margin: 0 0 16px; }
+      p { font-size: 17.78px; line-height: 1.35; color: #475569; }
       code { font-family: "IBM Plex Mono", monospace; font-size: 0.9em; }
     `,
     css: `.bar {
@@ -96,7 +96,7 @@ const labs = [
     unsupported: "This browser does not support discrete transitions yet, so the menu will snap.",
     baseCss: `
       html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; font-size: 40px; }
+      body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; font-size: 17.78px; }
       .wrap { width: min(520px, calc(100% - 32px)); display: grid; gap: 16px; }
       button { grid-area: 1 / 1; width: 100%; border: 0; background: #0f172a; color: white; font: inherit; font-weight: 700; padding: 16px 22px; border-radius: 999px; cursor: pointer; }
       .menu, .slot { grid-area: 2 / 1; margin: 0; padding: 10px; list-style: none; border-radius: 16px; border: 1px solid #e2e8f0; }
@@ -157,7 +157,7 @@ const labs = [
     unsupported: "This browser cannot transition to height: auto yet, so the panel will snap open.",
     baseCss: `
       html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #ffffff; color: #0f172a; font-family: Outfit, sans-serif; font-size: 40px; }
+      body { margin: 0; display: grid; place-items: center; background: #ffffff; color: #0f172a; font-family: Outfit, sans-serif; font-size: 17.78px; }
       .item { width: min(760px, calc(100% - 32px)); border: 1px solid #e2e8f0; border-radius: 18px; overflow: hidden; }
       button { width: 100%; text-align: left; border: 0; background: #f8fafc; font: inherit; font-weight: 700; padding: 20px 24px; cursor: pointer; }
       .panel p { margin: 0; padding: 0 24px 22px; color: #475569; line-height: 1.4; }
@@ -202,7 +202,7 @@ const labs = [
     tools: (_lab, api) => [{ label: "Replay", onClick: () => api.render() }],
     baseCss: `
       html, body { height: 100%; }
-      body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; font-size: 32px; }
+      body { margin: 0; display: grid; place-items: center; background: #f8fafc; font-family: Outfit, sans-serif; font-size: 14.22px; }
       .stage { height: 280px; display: grid; align-items: end; justify-items: center; }
       .ball { width: 84px; height: 84px; border-radius: 50%; background: #7c3aed; }
       .floor { width: 180px; height: 4px; border-radius: 999px; background: #e2e8f0; margin-top: 8px; }
